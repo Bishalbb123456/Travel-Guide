@@ -3,21 +3,31 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables. Please check your .env file')
-  throw new Error('Missing Supabase environment variables')
+// Check if Supabase is properly configured
+export const isSupabaseConfigured = 
+  supabaseUrl && 
+  supabaseAnonKey && 
+  supabaseUrl !== 'your_supabase_url_here' && 
+  supabaseAnonKey !== 'your_supabase_anon_key_here' &&
+  supabaseUrl.startsWith('https://')
+
+// Only create Supabase client if properly configured
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
+
+// Test the connection only if Supabase is configured
+if (isSupabaseConfigured && supabase) {
+  supabase.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      console.error('Error connecting to Supabase:', error.message)
+    } else {
+      console.log('Successfully connected to Supabase')
+    }
+  })
+} else {
+  console.log('Using mock data - Supabase not configured')
 }
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-// Test the connection
-supabase.auth.getSession().then(({ data, error }) => {
-  if (error) {
-    console.error('Error connecting to Supabase:', error.message)
-  } else {
-    console.log('Successfully connected to Supabase')
-  }
-})
 
 // Types for our database
 export interface Destination {
@@ -47,7 +57,7 @@ export interface DestinationFilters {
 
 // Supabase functions
 export const fetchDestinations = async (filters?: DestinationFilters) => {
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured || !supabase) {
     // Return mock data when Supabase is not configured
     return getMockDestinations(filters)
   }
@@ -92,6 +102,16 @@ export const fetchDestinations = async (filters?: DestinationFilters) => {
 }
 
 export const searchDestinations = async (searchTerm: string) => {
+  if (!isSupabaseConfigured || !supabase) {
+    const mockData = getMockDestinations()
+    return mockData.filter(dest => 
+      dest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      dest.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      dest.region?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      dest.description.toLowerCase().includes(searchTerm.toLowerCase())
+    ).slice(0, 10)
+  }
+
   const { data, error } = await supabase
     .from('destinations')
     .select('*')
@@ -108,7 +128,7 @@ export const searchDestinations = async (searchTerm: string) => {
 }
 
 export const getDestinationById = async (id: number) => {
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured || !supabase) {
     const mockData = getMockDestinations()
     return mockData.find(dest => dest.id === id) || null
   }
