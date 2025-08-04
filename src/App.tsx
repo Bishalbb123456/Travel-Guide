@@ -11,9 +11,9 @@ import Login from './pages/Login'
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <main className="flex-grow">
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/destinations" element={<Destinations />} />

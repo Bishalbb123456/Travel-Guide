@@ -1,96 +1,66 @@
-import React from 'react';
-import { MapPin, Phone, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
+import React from 'react'
+import { Mountain, Mail, Phone, MapPin } from 'lucide-react'
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <h3 className="text-2xl font-bold mb-4 text-orange-400">WanderLust</h3>
-            <p className="text-gray-400 mb-4">
-              Your trusted partner in creating unforgettable travel experiences around the world.
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <Mountain className="h-8 w-8 text-blue-400" />
+              <span className="text-xl font-bold">Nepal Explorer</span>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Discover the breathtaking beauty of Nepal with our expertly curated trekking and cultural experiences.
             </p>
             <div className="flex space-x-4">
-              <Facebook className="h-6 w-6 text-gray-400 hover:text-white cursor-pointer transition-colors" />
-              <Twitter className="h-6 w-6 text-gray-400 hover:text-white cursor-pointer transition-colors" />
-              <Instagram className="h-6 w-6 text-gray-400 hover:text-white cursor-pointer transition-colors" />
+              <div className="flex items-center space-x-2">
+                <Mail className="h-4 w-4 text-blue-400" />
+                <span className="text-sm">info@wanderlust.com</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Phone className="h-4 w-4 text-blue-400" />
+                <span className="text-sm">+1 (555) 123-4567</span>
+              </div>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {['Destinations', 'Tours', 'Hotels', 'Flights', 'Car Rentals', 'Travel Insurance'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Support</h4>
-            <ul className="space-y-2">
-              {['Help Center', 'Travel Tips', 'Booking Guide', 'Cancellation Policy', 'Terms & Conditions', 'Privacy Policy'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
+              <li><a href="/destinations" className="text-gray-300 hover:text-white transition-colors">Destinations</a></li>
+              <li><a href="/about-nepal" className="text-gray-300 hover:text-white transition-colors">About Nepal</a></li>
+              <li><a href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-orange-400 mt-1 flex-shrink-0" />
-                <span className="text-gray-400">
-                  123 Travel Street<br />
-                  Adventure City, AC 12345
+            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <div className="space-y-2">
+              <div className="flex items-start space-x-2">
+                <MapPin className="h-4 w-4 text-blue-400 mt-1" />
+                <span className="text-sm text-gray-300">
+                  123 Adventure Street<br />
+                  Travel City, TC 12345
                 </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-orange-400" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-orange-400" />
-                <span className="text-gray-400">info@wanderlust.com</span>
               </div>
             </div>
           </div>
         </div>
 
-        <hr className="border-gray-800 my-8" />
-
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © 2025 WanderLust Travel Company. All rights reserved.
+            © 2024 WanderLust. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Terms of Service
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Cookie Policy
-            </a>
-          </div>
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
