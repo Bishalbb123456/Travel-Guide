@@ -250,7 +250,7 @@ const getMockDestinations = (filters?: DestinationFilters): Destination[] => {
       region: "Khumbu",
       description: "The ultimate trekking adventure to the base of the world's highest mountain. Experience Sherpa culture, stunning mountain views, and the thrill of reaching 5,364m.",
       rich_description: "Embark on the most iconic trek in the world to Everest Base Camp. This challenging 14-day journey takes you through the heart of the Khumbu region, home to the legendary Sherpa people. Experience breathtaking mountain vistas, ancient monasteries, and the unique high-altitude culture of the Himalayas.",
-      image_url: "https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image_url: "https://cdn1.tripoto.com/media/filter/tst/img/1429685/Image/1582733154_nepal1.jpg.webp",
       price: 2499,
       duration: "14 days",
       rating: 4.9,
