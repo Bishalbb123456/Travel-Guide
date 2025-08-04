@@ -36,7 +36,7 @@ const Home = () => {
       <section 
         className="relative h-screen flex items-center justify-center bg-cover bg-center"
         style={{
-          backgroundImage: 'url(https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=1600)'
+          backgroundImage: 'url("https://cdn1.tripoto.com/media/filter/tst/img/1429685/Image/1582733154_nepal1.jpg.webp")'
         }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
