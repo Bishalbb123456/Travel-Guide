@@ -1,13 +1,22 @@
 import React from 'react'
-import { Star, MapPin, Clock, Mountain } from 'lucide-react'
+import { Star, MapPin, Clock, Mountain, Edit, Trash2, Navigation } from 'lucide-react'
 import { Destination } from '../lib/supabase'
 
 interface DestinationCardProps {
   destination: Destination
   onClick?: () => void
+  onEdit?: () => void
+  onDelete?: () => void
+  showActions?: boolean
 }
 
-const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onClick }) => {
+const DestinationCard: React.FC<DestinationCardProps> = ({ 
+  destination, 
+  onClick, 
+  onEdit, 
+  onDelete, 
+  showActions = false 
+}) => {
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty?.toLowerCase()) {
       case 'easy':
@@ -21,9 +30,27 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onClick 
     }
   }
 
+  const handleNavigate = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (destination.latitude && destination.longitude) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${destination.latitude},${destination.longitude}`
+      window.open(url, '_blank')
+    }
+  }
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onEdit?.()
+  }
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onDelete?.()
+  }
+
   return (
     <div 
-      className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+      className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer relative group"
       onClick={onClick}
     >
       <div className="relative">
@@ -46,6 +73,26 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onClick 
           </div>
         )}
       </div>
+
+      {/* Action buttons */}
+      {showActions && (
+        <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button
+            onClick={handleEdit}
+            className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-lg transition-colors duration-200"
+            title="Edit destination"
+          >
+            <Edit className="h-4 w-4" />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg transition-colors duration-200"
+            title="Delete destination"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      )}
 
       <div className="p-6">
         <div className="flex items-center gap-2 mb-2">
@@ -95,9 +142,20 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onClick 
           <div className="text-2xl font-bold text-sky-600">
             ${destination.price}
           </div>
-          <button className="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
-            View Details
-          </button>
+          <div className="flex gap-2">
+            {destination.latitude && destination.longitude && (
+              <button
+                onClick={handleNavigate}
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors duration-200 flex items-center gap-1"
+                title="Navigate with Google Maps"
+              >
+                <Navigation className="h-4 w-4" />
+              </button>
+            )}
+            <button className="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+              View Details
+            </button>
+          </div>
         </div>
       </div>
     </div>

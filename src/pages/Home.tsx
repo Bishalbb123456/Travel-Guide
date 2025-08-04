@@ -119,7 +119,7 @@ const Home: React.FC = () => {
                 <DestinationCard
                   key={destination.id}
                   destination={destination}
-                  onClick={() => window.location.href = `/destinations/${destination.id}`}
+                  onClick={() => window.open(`/destinations/${destination.id}`, '_blank')}
                 />
               ))}
             </div>
@@ -170,7 +170,7 @@ const Home: React.FC = () => {
                 <DestinationCard
                   key={destination.id}
                   destination={destination}
-                  onClick={() => window.location.href = `/destinations/${destination.id}`}
+                  onClick={() => window.open(`/destinations/${destination.id}`, '_blank')}
                 />
               ))}
             </div>

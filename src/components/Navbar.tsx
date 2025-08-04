@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Mountain, User } from 'lucide-react'
+import { Menu, X, Mountain, User, Settings } from 'lucide-react'
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -11,6 +11,7 @@ const Navbar: React.FC = () => {
     { name: 'Destinations', path: '/destinations' },
     { name: 'About Nepal', path: '/about-nepal' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Admin', path: '/admin' },
   ]
 
   const isActive = (path: string) => {
@@ -33,12 +34,14 @@ const Navbar: React.FC = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.path)
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-1 ${
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 flex items-center gap-2 ${
                     ? 'text-sky-600 bg-sky-50'
                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                 }`}
               >
+                {item.name === 'Admin' && <Settings className="h-4 w-4" />}
+                {item.name === 'Admin' && <Settings className="h-4 w-4" />}
                 {item.name}
               </Link>
             ))}

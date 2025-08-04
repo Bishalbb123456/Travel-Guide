@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Filter, SlidersHorizontal, X } from 'lucide-react'
+import { Filter, SlidersHorizontal, X, MapPin } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import DestinationCard from '../components/DestinationCard'
+import GoogleMap from '../components/GoogleMap'
 import { fetchDestinations, searchDestinations, Destination, DestinationFilters } from '../lib/supabase'
 
 const Destinations: React.FC = () => {
@@ -10,6 +11,7 @@ const Destinations: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
+  const [showMap, setShowMap] = useState(false)
   const [filters, setFilters] = useState<DestinationFilters>({
     country: searchParams.get('country') || '',
     region: '',
@@ -81,6 +83,20 @@ const Destinations: React.FC = () => {
 
   const hasActiveFilters = Object.values(filters).some(value => value !== '' && value !== undefined) || searchParams.get('search')
 
+  const destinationsWithCoords = destinations.filter(d => d.latitude && d.longitude)
+  const mapCenter = destinationsWithCoords.length > 0 
+    ? { 
+        lat: destinationsWithCoords.reduce((sum, d) => sum + (d.latitude || 0), 0) / destinationsWithCoords.length,
+        lng: destinationsWithCoords.reduce((sum, d) => sum + (d.longitude || 0), 0) / destinationsWithCoords.length
+      }
+    : { lat: 28.3949, lng: 84.1240 } // Nepal center
+
+  const mapMarkers = destinationsWithCoords.map(destination => ({
+    position: { lat: destination.latitude!, lng: destination.longitude! },
+    title: destination.name,
+    info: `${destination.description.substring(0, 100)}... - $${destination.price}`
+  }))
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -103,18 +119,32 @@ const Destinations: React.FC = () => {
         {/* Filters */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center space-x-2 bg-white border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors duration-200"
-            >
-              <SlidersHorizontal className="h-5 w-5" />
-              <span>Filters</span>
-              {hasActiveFilters && (
-                <span className="bg-sky-500 text-white text-xs rounded-full px-2 py-1">
-                  Active
-                </span>
-              )}
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center space-x-2 bg-white border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <SlidersHorizontal className="h-5 w-5" />
+                <span>Filters</span>
+                {hasActiveFilters && (
+                  <span className="bg-sky-500 text-white text-xs rounded-full px-2 py-1">
+                    Active
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={() => setShowMap(!showMap)}
+                className={`flex items-center space-x-2 border rounded-lg px-4 py-2 transition-colors duration-200 ${
+                  showMap 
+                    ? 'bg-sky-500 text-white border-sky-500' 
+                    : 'bg-white border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <MapPin className="h-5 w-5" />
+                <span>Map View</span>
+              </button>
+            </div>
 
             {hasActiveFilters && (
               <button
@@ -248,7 +278,7 @@ const Destinations: React.FC = () => {
               <DestinationCard
                 key={destination.id}
                 destination={destination}
-                onClick={() => window.location.href = `/destinations/${destination.id}`}
+                onClick={() => window.open(`/destinations/${destination.id}`, '_blank')}
               />
             ))}
           </div>
@@ -268,6 +298,19 @@ const Destinations: React.FC = () => {
           </div>
         )}
       </div>
+        {/* Map View */}
+        {showMap && (
+          <div className="mb-8 bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="h-96">
+              <GoogleMap
+                center={mapCenter}
+                zoom={6}
+                markers={mapMarkers}
+              />
+            </div>
+          </div>
+        )}
+
     </div>
   )
 }
