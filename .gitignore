@@ -6,10 +6,17 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Performance optimization
+.git/index.lock
+.git/refs/heads/*
+.git/refs/remotes/*
+
 # Build outputs
 dist/
 dist-ssr/
 *.local
+*.tmp
+*.temp
 
 # Environment files
 .env
@@ -28,6 +35,32 @@ dist-ssr/
 *.njsproj
 *.sln
 *.sw?
+
+# Large files that slow commits
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mp4
+*.mov
+*.avi
+
+# Cache directories
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Logs
 logs/
